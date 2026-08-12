@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck (error-level gate)
+        run: shellcheck -S error scripts/*.sh
+      - name: shellcheck (style report, non-fatal)
+        run: shellcheck -f gcc scripts/*.sh || true
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: install
+        run: pip install pytest
+      - name: installer + config tests
+        run: python -m pytest tests/ -q

@@ -32,3 +32,8 @@ Wrapper for forked [`gaganjainse/waveterm`](https://github.com/gaganjainse/wavet
 - Fork tracks upstream `main` (weekly sync via Action, TBD).
 - Patches only when unavoidable, **upstream PR first**, fork is the pin + fallback.
 - RAM note: Electron Wave ≈ 250–500 MB — acceptable as *mission control*; daily-driver terminals stay alacritty/foot + tmux.
+
+## Security
+
+Security posture and vulnerability reporting: [canonical ecosystem security
+policy](https://github.com/gaganjainse/shesh-ecosystem/blob/main/SECURITY.md).

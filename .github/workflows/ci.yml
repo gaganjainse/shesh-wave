@@ -13,10 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: shellcheck (error-level gate)
-        run: shellcheck -S error scripts/*.sh
-      - name: shellcheck (style report, non-fatal)
-        run: shellcheck -f gcc scripts/*.sh || true
+      # Single gate at warning severity: scripts are clean at this level,
+      # so warnings failing the build costs nothing and notices stay loud.
+      # (Was: an error-level gate plus a second `|| true` style report —
+      #  the `|| true` made findings structurally invisible; removed.)
+      - name: shellcheck (warning-level gate)
+        run: shellcheck -S warning scripts/*.sh
 
   tests:
     runs-on: ubuntu-latest

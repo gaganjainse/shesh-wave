@@ -72,9 +72,10 @@ lightweight boot/recovery console where Electron is too heavy, or the SheshAOS k
 
 - renderer: libghostty's Metal/Vulkan paths (GPU, ligatures, kitty graphics)
 - input: its key handling already matches what power users expect
-- our terminal crate in SheshAOS is zig-backed today (the `shesh-terminal` build uses
-  the zig toolchain), so embedding libghostty later is a build-system step, not a
-  language rewrite.
+- embedding libghostty is a self-contained native step: C ABI + its own Zig build
+  system, living in its own crate/app — it would NOT reintroduce Zig into the
+  SheshAOS main build (ADR-0001: no Zig/FFI in the main build; the old
+  zig-backed `shesh-terminal` crate was removed in the 2026-08-12 excision).
 
 **Status: watch-only.** Ghostty is pre-1.0 and libghostty's C ABI is not yet stable.
 Decision gate: when libghostty ships a tagged release with ABI guarantees, prototype a

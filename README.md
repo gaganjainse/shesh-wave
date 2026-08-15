@@ -1,41 +1,34 @@
->  **Consolidated into [shesh-core](https://github.com/gaganjainse/shesh-core)** — this module now lives in the shesh-core monorepo (same package name, same console script). Archived 2026-08-13.
+# shesh-wave
 
-# shesh-wave — Wave terminal as Shesh mission control
+> **Superseded by [shesh-core](https://github.com/gaganjainse/shesh-core).**
+> This repository is a tombstone: its history is preserved, its source is not.
 
-Wrapper for forked [`gaganjainse/waveterm`](https://github.com/gaganjainse/waveterm)
-(upstream [`wavetermdev/waveterm`](https://github.com/wavetermdev/waveterm), 22k, actively maintained).
+## What happened
 
-> **Policy: integrate, never rewrite.** Wave = Electron/React 19 + Monaco + xterm-webgl frontend
-> (~60k LOC TS) and a Go backend (~75k LOC: `pkg/waveobj`, `pkg/wps`, `pkg/wconfig`,
-> `pkg/blockcontroller`, `pkg/wshrpc`, `pkg/remote`, `pkg/secretstore`, …).
-> A Rust reimplementation was attempted in `shesh-kernel` (the `shesh-waveobj/-wps/-blockctl/…`
-> crates literally mirror Wave's Go packages 1:1) and is **formally abandoned** — see judgment in
-> shesh-ecosystem ADR. This repo is where Shesh meets stock Wave through *documented* surfaces only.
+[ADR-0019](https://github.com/gaganjainse/shesh-docs/blob/main/src/governance/adr/0019-shesh-core-monorepo.md)
+consolidated the single-module services into one repository. A module of a few
+hundred lines is not a service: each one carried its own build configuration,
+pipeline, and security policy, and those drifted apart from each other.
 
-## Integration surfaces (no patches needed)
+Its configuration now lives under `wave/` in `shesh-core`.
 
-| Surface | File/API | Shesh use |
-|---|---|---|
-| Custom widgets | `~/.waveterm/config/widgets.json` | shesh-memory recall, shesh-audit trail, shesh-system GPU/power, swarm queue status as widget-bar entries |
-| `wsh` CLI RPC | `wsh` (see upstream `docs/wsh-reference`) | Shesh agents create/read blocks, set workspaces, drive panes from MCP tools |
-| Workspaces | `docs/workspaces` | one workspace per federation layer (brain/mind/soma) |
-| Wave AI | OpenAI-compatible endpoint config | point at **OmniRoute** (`shesh-omniroute`) for free big models, or local **Ollama** (phi4-mini, qwen2.5-coder) — 6 GB VRAM budget honored |
-| Secrets | Wave `secretstore` / `docs/secrets` | API keys resolved via **shesh-secrets** (`env:`/`gopass:`/`file:0600`) — never plaintext |
+## Why the source was removed
 
-## Layout (planned)
+Two copies of the same module drift. Keeping the code here meant a reader could
+find it, edit it, and have the change silently ignored by everything that
+actually runs.
 
-- `config/widgets.json` — the Shesh widget bar
-- `config/keybindings.json` — Hyprland-consistent bindings
-- `wsh/` — scripts: `wave-mission-control.sh` (spawn 4-pane ops layout), swarm dashboard block
-- `docs/` — integration notes, screenshots, decisions
+The history remains in this repository's git log. Nothing was lost.
 
-## Fork policy
+## Installing
 
-- Fork tracks upstream `main` (weekly sync via Action, TBD).
-- Patches only when unavoidable, **upstream PR first**, fork is the pin + fallback.
-- RAM note: Electron Wave ≈ 250–500 MB — acceptable as *mission control*; daily-driver terminals stay alacritty/foot + tmux.
+```bash
+pipx install git+https://github.com/gaganjainse/shesh-core.git
+```
 
-## Security
+Console script names are unchanged, so existing client configuration keeps
+working.
 
-Security posture and vulnerability reporting: [canonical ecosystem security
-policy](https://github.com/gaganjainse/shesh-ecosystem/blob/main/SECURITY.md).
+## Licence
+
+GPL-3.0-or-later.

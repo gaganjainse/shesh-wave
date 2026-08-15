@@ -1,28 +1,40 @@
 name: CI
 
+# A tombstone has no source to test. This job asserts that it stays inert:
+# if source reappears here, the module has been forked away from shesh-core
+# and the two copies will drift.
+
 on:
   push:
     branches: [main]
   pull_request:
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
-  test:
+  tombstone:
+    name: Repository is superseded
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/checkout@v4
         with:
-          python-version: '3.12'
-      - name: Install
-        run: python -m pip install ruff pytest
-      - name: Lint (Python)
-        run: ruff check .
-      - name: Lint (shell)
+          persist-credentials: false
+
+      - name: No source may live here
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
-          shellcheck -S warning scripts/*.sh
-      - name: Test
-        run: python -m pytest -q
+          if [ -d src ] || [ -d tests ]; then
+            echo "::error::src/ or tests/ present in a superseded repository."
+            echo "The canonical code is in shesh-core (ADR-0019)."
+            exit 1
+          fi
+          echo "Inert, as intended. Canonical source: shesh-core."
+
+      - name: The README must point at the replacement
+        run: |
+          grep -q "shesh-core" README.md || {
+            echo "::error::README must name the superseding repository."
+            exit 1
+          }
+          echo "Supersession recorded."

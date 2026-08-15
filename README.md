@@ -1,9 +1,9 @@
-> ⚠️ **Consolidated into [shesh-core](https://github.com/gaganjainse/shesh-core)** — this module now lives in the shesh-core monorepo (same package name, same console script). Archived 2026-08-13.
+>  **Consolidated into [shesh-core](https://github.com/gaganjainse/shesh-core)** — this module now lives in the shesh-core monorepo (same package name, same console script). Archived 2026-08-13.
 
-# 🌊 shesh-wave — Wave Terminal as Shesh Mission Control
+# shesh-wave — Wave terminal as Shesh mission control
 
 Wrapper for forked [`gaganjainse/waveterm`](https://github.com/gaganjainse/waveterm)
-(upstream [`wavetermdev/waveterm`](https://github.com/wavetermdev/waveterm), 22k★, actively maintained).
+(upstream [`wavetermdev/waveterm`](https://github.com/wavetermdev/waveterm), 22k, actively maintained).
 
 > **Policy: integrate, never rewrite.** Wave = Electron/React 19 + Monaco + xterm-webgl frontend
 > (~60k LOC TS) and a Go backend (~75k LOC: `pkg/waveobj`, `pkg/wps`, `pkg/wconfig`,
